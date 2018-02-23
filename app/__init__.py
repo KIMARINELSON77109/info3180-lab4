@@ -11,4 +11,5 @@ UPLOAD_FOLDER = "./app/static/uploads"
 app = Flask(__name__)
 app.config.from_object(__name__)
 UploadFolder = app.config['UPLOAD_FOLDER']
+Allowed_Uploads = ['jpg','png','jpeg']
 from app import views

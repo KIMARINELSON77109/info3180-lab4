@@ -5,7 +5,7 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 import os
-from app import app, UploadFolder
+from app import app, UploadFolder, Allowed_Uploads
 from flask import render_template, request, redirect, url_for, flash, session, abort
 from werkzeug.utils import secure_filename
 from form import UploadForm
@@ -45,6 +45,24 @@ def upload():
 
     return render_template('upload.html',  form = U_form)
 
+
+
+@app.route('/files')
+def files():
+    if not session.get('logged_in'):
+        abort(401)
+
+    Load_files_list = get_uploaded_images()
+    return render_template('files.html', uploaded_images = Load_files_list)
+
+def get_uploaded_images():
+    Images = []
+    L_files = os.listdir('./app/static/uploads/')
+    for file in L_files:
+        if file.split('.')[-1] in Allowed_Uploads:
+            Images.append(file)
+    return Images
+    
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
